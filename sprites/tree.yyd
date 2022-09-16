@@ -1,5 +1,12 @@
 +Sponge
+	|sprSpongeMask
+	|sprSpongeMaskSmall
 	|sprSpongeIdle
 	|sprSpongeMove
 +Particles
+	|sprSmokePuff
 +Tiles
+	|sprSolid
+	|sprSlopeL
+	|sprSlopeR
+	|sprSemiSolid

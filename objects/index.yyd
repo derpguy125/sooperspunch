@@ -2,3 +2,7 @@
 parSolid
 parSemiSolid
 objPlayer
+objSolid
+objSlopeL
+objSlopeR
+objSemiSolid

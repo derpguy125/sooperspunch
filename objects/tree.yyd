@@ -1,5 +1,10 @@
 +Controllers
 	|objPlayer
-+Parents
-	|parSolid
-	|parSemiSolid
++Tiles
+	+Parents
+		|parSolid
+		|parSemiSolid
+	|objSolid
+	|objSlopeL
+	|objSlopeR
+	|objSemiSolid
