@@ -1,2 +1,5 @@
++Controllers
+	|objPlayer
 +Parents
 	|parSolid
+	|parSemiSolid
