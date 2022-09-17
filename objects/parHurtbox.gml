@@ -1,3 +1,10 @@
+#define Create_0
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+destroy = true;
 #define Collision_objDestroyable
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -8,7 +15,7 @@ invert=0
 #define Other_7
 /*"/*'/**//* YYD ACTION
 lib_id=1
-action_id=203
+action_id=603
 applies_to=self
-invert=0
 */
+if destroy then instance_destroy();

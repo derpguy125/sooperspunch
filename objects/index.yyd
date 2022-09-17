@@ -13,3 +13,5 @@ objAttackThing
 
 objLungeThing
 parHurtbox
+objGPoundThing
+objDoor

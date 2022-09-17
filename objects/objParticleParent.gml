@@ -22,13 +22,6 @@ vsp += grv;
 
 x += hsp;
 y += vsp;
-#define Other_0
-/*"/*'/**//* YYD ACTION
-lib_id=1
-action_id=203
-applies_to=self
-invert=0
-*/
 #define Other_7
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -36,3 +29,10 @@ action_id=603
 applies_to=self
 */
 if looping then instance_destroy();
+#define Other_40
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=203
+applies_to=self
+invert=0
+*/

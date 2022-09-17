@@ -28,6 +28,8 @@ acc = 0.25;
 top = 4;
 
 canVarJump = false;
+
+targRoom = rmInit;
 /*"/*'/**//* YYD ACTION
 lib_id=1
 action_id=603
@@ -109,7 +111,7 @@ applies_to=self
 var moveKeys;
 moveKeys = key_right - key_left;
 
-if !rolling and !attack and !lunge and moveKeys != 0 then {
+if !rolling and !attack and !lunge and !pound and moveKeys != 0 then {
     dir = moveKeys;
     if moveKeys = 1 then {
         if hsp <  top then hsp += acc; else hsp =  top;
@@ -167,7 +169,7 @@ if ground then {
     // lunging
     if !lunge and !ducking and !rolling and !lunge and hsp != 0 and key_action2_pressed then {
         lunge = true;
-        vsp = jmp / 1.6;
+        vsp = jmp / 1.7;
         hsp = dir * top;
         ground = false;
         acc = 0;
@@ -208,6 +210,18 @@ else {
         vsp = -0.25;
         canVarJump = false;
     }
+
+    if !pound and key_down_pressed then {
+        pound = true;
+        vsp = mvl;
+        hsp = 0;
+
+        var atk;
+        atk = instance_create(x,y+16,objGPoundThing);
+        atk.image_speed = 0;
+        atk.image_alpha = 0;
+    }
+
     if vsp < mvl then vsp += grv;
 }
 /*"/*'/**//* YYD ACTION
@@ -297,7 +311,7 @@ if ground then {
         image_speed = 0.5;
     }
 } else {
-    if !rolling and !lunge then {
+    if !rolling and !lunge and !pound then {
         sprite_index = sprSpongeJump;
         if vsp < 0 then {
             image_index = 0;
@@ -315,6 +329,9 @@ if ground then {
             image_speed = 0;
             image_index = 7;
         }
+    } else if pound then {
+        sprite_index = sprSpongePound;
+        image_speed = 0;
     }
 }
 
@@ -342,16 +359,16 @@ applies_to=self
 */
 
 
-if rolling then {
-    draw_sprite_ext(sprite_index,image_index,round(x - (hsp*3)),round(y - (vsp*3)) + 6,
+if rolling or lunge or pound then {
+    draw_sprite_ext(sprite_index,image_index,round(x - (hsp*3)),round(y - (vsp*3)) + 4,
         dir,1,0,c_white,0.25);
 
-    draw_sprite_ext(sprite_index,image_index,round(x - (hsp*2)),round(y - (vsp*2)) + 6,
+    draw_sprite_ext(sprite_index,image_index,round(x - (hsp*2)),round(y - (vsp*2)) + 4,
         dir,1,0,c_white,0.5);
 
-    draw_sprite_ext(sprite_index,image_index,round(x - (hsp)),round(y - (vsp)) + 6,
+    draw_sprite_ext(sprite_index,image_index,round(x - (hsp)),round(y - (vsp)) + 4,
         dir,1,0,c_white,0.75);
 }
 
-draw_sprite_ext(sprite_index,image_index,round(x),round(y) + 6,
+draw_sprite_ext(sprite_index,image_index,round(x),round(y) + 4,
     dir,1,0,c_white,1);

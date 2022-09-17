@@ -16,3 +16,6 @@ sprSpongeAttack
 sprSAttackHurtbox
 sprSpongeLunge
 sprSLungeHurtbox
+sprDoor
+sprSpongePound
+sprGPoundHurtbox

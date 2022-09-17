@@ -8,6 +8,7 @@
 	+Hurtboxes
 		|objAttackThing
 		|objLungeThing
+		|objGPoundThing
 +Tiles
 	|objSolid
 	|objSlopeL
@@ -16,3 +17,5 @@
 	|objDestroyable
 +Particle
 	|objParticleParent
++Objects
+	|objDoor

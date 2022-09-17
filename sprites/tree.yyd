@@ -8,6 +8,7 @@
 	|sprSpongeRoll
 	|sprSpongeAttack
 	|sprSpongeLunge
+	|sprSpongePound
 +Particles
 	|sprSmokePuff
 	|sprDestroyed
@@ -22,3 +23,6 @@
 +Hurtboxes
 	|sprSAttackHurtbox
 	|sprSLungeHurtbox
+	|sprGPoundHurtbox
++Object
+	|sprDoor
