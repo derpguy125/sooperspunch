@@ -168,6 +168,23 @@ else {
     }
     if vsp < mvl then vsp += grv;
 }
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+/// block destroying
+
+if rolling then {
+    var block;
+    block = instance_place(x+hsp,y,objDestroyable);
+
+    if block != noone then {
+        with block {
+            instance_destroy();
+        }
+    }
+}
 #define Step_1
 /*"/*'/**//* YYD ACTION
 lib_id=1

@@ -9,3 +9,6 @@
 	|objSlopeL
 	|objSlopeR
 	|objSemiSolid
+	|objDestroyable
++Particle
+	|objParticleParent

@@ -7,3 +7,5 @@ objSlopeL
 objSlopeR
 objSemiSolid
 objBG
+objDestroyable
+objParticleParent
