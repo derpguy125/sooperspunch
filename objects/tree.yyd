@@ -1,3 +1,7 @@
++Parents
+	|parSolid
+	|parSemiSolid
+	|parHurtbox
 +Controllers
 	|objPlayer
 	|objBG
@@ -5,9 +9,6 @@
 		|objAttackThing
 		|objLungeThing
 +Tiles
-	+Parents
-		|parSolid
-		|parSemiSolid
 	|objSolid
 	|objSlopeL
 	|objSlopeR
