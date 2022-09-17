@@ -1,7 +1,7 @@
 gm82_version=4
 gameid=281569079
 
-info_author=
+info_author=dg125
 info_version=100
 info_information=
 
@@ -9,5 +9,5 @@ exe_company=
 exe_product=
 exe_copyright=
 exe_description=
-exe_version=1.0.0.0
+exe_version=0.0.1.0
 
