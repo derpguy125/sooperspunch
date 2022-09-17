@@ -10,3 +10,5 @@ objBG
 objDestroyable
 objParticleParent
 objAttackThing
+
+objLungeThing

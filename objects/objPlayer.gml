@@ -16,6 +16,7 @@ ducking = false;
 rolling = false;
 
 attack = false;
+lunge = false;
 
 grv = 0.2;
 jmp = -6.5;
@@ -108,7 +109,7 @@ applies_to=self
 var moveKeys;
 moveKeys = key_right - key_left;
 
-if !rolling and !attack and moveKeys != 0 then {
+if !rolling and !attack and !lunge and moveKeys != 0 then {
     dir = moveKeys;
     if moveKeys = 1 then {
         if hsp <  top then hsp += acc; else hsp =  top;
@@ -151,7 +152,7 @@ if ground then {
     }
 
     // attacking
-    if !attack and !ducking and !rolling and hsp = 0 and key_action2_pressed then {
+    if !attack and !ducking and !rolling and !lunge and hsp = 0 and key_action2_pressed then {
         attack = true;
         alarm[0] = 32;
         hsp = 0;
@@ -162,6 +163,22 @@ if ground then {
         atk.image_speed = 0.5;
         atk.image_alpha = 0;
     }
+
+    // lunging
+    if !lunge and !ducking and !rolling and !lunge and hsp != 0 and key_action2_pressed then {
+        lunge = true;
+        vsp = jmp / 1.6;
+        hsp = dir * top;
+        ground = false;
+        acc = 0;
+
+        var atk;
+        atk = instance_create(x+(dir * 8),y+4,objLungeThing);
+        atk.image_xscale = dir;
+        atk.image_speed = 0.5;
+        atk.image_alpha = 0;
+    }
+
     // ducking
     if !rolling and key_down then {
         ducking = true;
@@ -172,7 +189,11 @@ if ground then {
         mask_index = sprSpongeMaskSmall;
         top = 16;
         acc = 0.3;
-    } else if !rolling and !place_meeting(x,y-1,parSolid) then {
+    } else if lunge then {
+        mask_index = sprSpongeMask;
+        acc = 0;
+        top = 4;
+    } else if !rolling and !lunge and !place_meeting(x,y-1,parSolid) then {
         ducking = false;
         mask_index = sprSpongeMask;
         acc = 0.25;
@@ -196,7 +217,7 @@ applies_to=self
 */
 /// block destroying
 
-if rolling then {
+if rolling or lunge then {
     var block;
     block = instance_place(x+hsp,y,objDestroyable);
 
@@ -276,7 +297,7 @@ if ground then {
         image_speed = 0.5;
     }
 } else {
-    if !rolling then {
+    if !rolling and !lunge then {
         sprite_index = sprSpongeJump;
         if vsp < 0 then {
             image_index = 0;
@@ -286,6 +307,14 @@ if ground then {
     } else if rolling then {
         sprite_index = sprSpongeRoll;
         image_speed = 0.3;
+    } else if lunge then {
+        sprite_index = sprSpongeLunge;
+        image_speed = 0.25;
+
+        if image_index >= 7 then {
+            image_speed = 0;
+            image_index = 7;
+        }
     }
 }
 

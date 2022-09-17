@@ -3,6 +3,7 @@
 	|objBG
 	+Hurtboxes
 		|objAttackThing
+		|objLungeThing
 +Tiles
 	+Parents
 		|parSolid

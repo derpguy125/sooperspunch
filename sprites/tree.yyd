@@ -7,6 +7,7 @@
 	|sprSpongeDuck
 	|sprSpongeRoll
 	|sprSpongeAttack
+	|sprSpongeLunge
 +Particles
 	|sprSmokePuff
 	|sprDestroyed
@@ -20,3 +21,4 @@
 		|sprDestroyable
 +Hurtboxes
 	|sprSAttackHurtbox
+	|sprSLungeHurtbox

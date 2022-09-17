@@ -14,3 +14,5 @@ sprDestroyed
 sprSpongeRoll
 sprSpongeAttack
 sprSAttackHurtbox
+sprSpongeLunge
+sprSLungeHurtbox

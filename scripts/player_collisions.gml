@@ -64,12 +64,7 @@ if position_meeting(round(x), round(y) + 32, parSemiSolid) && vsp > 0  {
 
 if place_meeting(x,y+1,parSolid) or ((!(place_meeting(x, y, parSemiSolid))) && place_meeting(x, (y + 1), parSemiSolid)) then {
     ground = true;
-    /*if pound then {
-        allow_input = true;
-        pound = false;
-
-        smoke_puffs();
-    }*/
+    if lunge then lunge = false;
 }
 else ground = false;
 
