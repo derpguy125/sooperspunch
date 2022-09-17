@@ -5,6 +5,7 @@
 	|sprSpongeMove
 	|sprSpongeJump
 	|sprSpongeDuck
+	|sprSpongeRoll
 +Particles
 	|sprSmokePuff
 	|sprDestroyed

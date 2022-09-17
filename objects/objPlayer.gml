@@ -11,7 +11,9 @@ vsp = 0;
 
 ground = true;
 pound = false;
+
 ducking = false;
+rolling = false;
 
 grv = 0.2;
 jmp = -6.5;
@@ -97,7 +99,7 @@ applies_to=self
 var moveKeys;
 moveKeys = key_right - key_left;
 
-if moveKeys != 0 then {
+if !rolling and moveKeys != 0 then {
     dir = moveKeys;
     if moveKeys = 1 then {
         if hsp <  top then hsp += acc; else hsp =  top;
@@ -108,7 +110,18 @@ if moveKeys != 0 then {
 } else {
     if hsp > acc then hsp -= acc;
     else if hsp < -acc then hsp += acc;
-    else hsp = 0;
+    else {
+        hsp = 0;
+        if ground and rolling then {
+            rolling = false;
+            if place_meeting(x,y-1,parSolid) then {
+                ducking = true;
+                mask_index = sprSpongeMaskSmall;
+                acc = 0.1;
+                top = 2;
+            }
+        }
+    }
 }
 
 
@@ -119,15 +132,26 @@ if ground then {
         vsp = jmp;
         ground = false;
         canVarJump = true;
+    } else {
+        if ducking and key_action2_pressed then {
+            rolling = true;
+            ducking = false;
+            hsp = 16 * dir;
+
+        }
     }
 
     // ducking
-    if key_down then {
+    if !rolling and key_down then {
         ducking = true;
         mask_index = sprSpongeMaskSmall;
         acc = 0.1;
         top = 2;
-    } else if !place_meeting(x,y-1,parSolid) then {
+    } else if rolling then {
+        mask_index = sprSpongeMaskSmall;
+        top = 16;
+        acc = 0.3;
+    } else if !rolling and !place_meeting(x,y-1,parSolid) then {
         ducking = false;
         mask_index = sprSpongeMask;
         acc = 0.25;
@@ -192,7 +216,7 @@ var curSprite;
 curSprite = sprite_index;
 
 if ground then {
-    if !ducking then {
+    if !ducking and !rolling then {
         var moveKeys;
         moveKeys = key_right - key_left;
 
@@ -201,18 +225,26 @@ if ground then {
             image_speed = 0.5;
         } else {
             sprite_index = sprSpongeIdle;
-            image_speed = 0;
+            image_speed = 0.1;
         }
-    } else {
+    } else if ducking then {
         sprite_index = sprSpongeDuck;
         image_speed = 0;
+    } else if rolling then {
+        sprite_index = sprSpongeRoll;
+        image_speed = 0.3;
     }
 } else {
-    sprite_index = sprSpongeJump;
-    if vsp < 0 then {
-        image_index = 0;
-    } else {
-        image_index = 1;
+    if !rolling then {
+        sprite_index = sprSpongeJump;
+        if vsp < 0 then {
+            image_index = 0;
+        } else {
+            image_index = 1;
+        }
+    } else if rolling then {
+        sprite_index = sprSpongeRoll;
+        image_speed = 0.3;
     }
 }
 
@@ -238,5 +270,18 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+
+
+if rolling then {
+    draw_sprite_ext(sprite_index,image_index,round(x - (hsp*3)),round(y - (vsp*3)) + 6,
+        dir,1,0,c_white,0.25);
+
+    draw_sprite_ext(sprite_index,image_index,round(x - (hsp*2)),round(y - (vsp*2)) + 6,
+        dir,1,0,c_white,0.5);
+
+    draw_sprite_ext(sprite_index,image_index,round(x - (hsp)),round(y - (vsp)) + 6,
+        dir,1,0,c_white,0.75);
+}
+
 draw_sprite_ext(sprite_index,image_index,round(x),round(y) + 6,
     dir,1,0,c_white,1);
