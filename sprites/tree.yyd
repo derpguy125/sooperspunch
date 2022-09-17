@@ -4,10 +4,15 @@
 	|sprSpongeIdle
 	|sprSpongeMove
 	|sprSpongeJump
+	|sprSpongeDuck
 +Particles
 	|sprSmokePuff
+	|sprDestroyed
 +Tiles
-	|sprSolid
-	|sprSlopeL
-	|sprSlopeR
-	|sprSemiSolid
+	+Solid Crap
+		|sprSolid
+		|sprSlopeL
+		|sprSlopeR
+		|sprSemiSolid
+	+Destructable
+		|sprDestroyable

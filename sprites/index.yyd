@@ -8,3 +8,6 @@ sprSlopeR
 sprSemiSolid
 sprSpongeMaskSmall
 sprSpongeJump
+sprSpongeDuck
+sprDestroyable
+sprDestroyed

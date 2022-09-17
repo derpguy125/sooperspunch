@@ -1,5 +1,6 @@
 +Controllers
 	|objPlayer
+	|objBG
 +Tiles
 	+Parents
 		|parSolid

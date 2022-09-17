@@ -11,6 +11,7 @@ vsp = 0;
 
 ground = true;
 pound = false;
+ducking = false;
 
 grv = 0.2;
 jmp = -6.5;
@@ -99,10 +100,10 @@ moveKeys = key_right - key_left;
 if moveKeys != 0 then {
     dir = moveKeys;
     if moveKeys = 1 then {
-        if hsp < top then hsp += acc;
+        if hsp <  top then hsp += acc; else hsp =  top;
     }
     if moveKeys = -1 then {
-        if hsp >-top then hsp -= acc;
+        if hsp > -top then hsp -= acc; else hsp = -top;
     }
 } else {
     if hsp > acc then hsp -= acc;
@@ -110,15 +111,32 @@ if moveKeys != 0 then {
     else hsp = 0;
 }
 
-//vertical movement
+
 
 if ground then {
-    if key_action_pressed then {
+    // jumping
+    if !ducking and key_action_pressed then {
         vsp = jmp;
         ground = false;
         canVarJump = true;
     }
-} else {
+
+    // ducking
+    if key_down then {
+        ducking = true;
+        mask_index = sprSpongeMaskSmall;
+        acc = 0.1;
+        top = 2;
+    } else if !place_meeting(x,y-1,parSolid) then {
+        ducking = false;
+        mask_index = sprSpongeMask;
+        acc = 0.25;
+        top = 4;
+    }
+}
+
+//vertical movement
+else {
 
     if canVarJump and vsp < -0.25 and key_action_released then {
         vsp = -0.25;
@@ -174,12 +192,19 @@ var curSprite;
 curSprite = sprite_index;
 
 if ground then {
+    if !ducking then {
+        var moveKeys;
+        moveKeys = key_right - key_left;
 
-    if hsp != 0 then {
-        sprite_index = sprSpongeMove;
-        image_speed = 0.5;
+        if moveKeys != 0 then {
+            sprite_index = sprSpongeMove;
+            image_speed = 0.5;
+        } else {
+            sprite_index = sprSpongeIdle;
+            image_speed = 0;
+        }
     } else {
-        sprite_index = sprSpongeIdle;
+        sprite_index = sprSpongeDuck;
         image_speed = 0;
     }
 } else {
