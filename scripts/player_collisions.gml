@@ -41,25 +41,17 @@ if place_meeting(x,y+vsp,parSolid) {
 }
 y += vsp;
 
-//tester
-if place_meeting(x,y+1,parSolid) then {
-    ground = true;
-    /*if pound then {
-        allow_input = true;
-        pound = false;
-
-        smoke_puffs();
-    }*/
-}
-else ground = false;
-
 //One Way Solid Colissions
 if position_meeting(round(x), round(y) + 32, parSemiSolid) && vsp > 0  {
-    var wall;
+    var wall, sprite_bbox_bottom;
+
     wall = instance_position(round(x), round(y) + 32, parSemiSolid);
-    if (vsp > 0) { //down
+    sprite_bbox_bottom = sprite_get_bbox_bottom(mask_index) - sprite_get_yoffset(mask_index);
+
+        if (vsp > 0) { //down
         y = (wall.bbox_top-1) - sprite_bbox_bottom;
-        ground = true;
+
+        //ground = true;
         /*if pound then {
             allow_input = true;
             pound = false;
@@ -70,6 +62,16 @@ if position_meeting(round(x), round(y) + 32, parSemiSolid) && vsp > 0  {
     vsp = 0;
 }
 
+if place_meeting(x,y+1,parSolid) or ((!(place_meeting(x, y, parSemiSolid))) && place_meeting(x, (y + 1), parSemiSolid)) then {
+    ground = true;
+    /*if pound then {
+        allow_input = true;
+        pound = false;
+
+        smoke_puffs();
+    }*/
+}
+else ground = false;
 
 
 // side collisions

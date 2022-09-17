@@ -3,6 +3,7 @@
 	|sprSpongeMaskSmall
 	|sprSpongeIdle
 	|sprSpongeMove
+	|sprSpongeJump
 +Particles
 	|sprSmokePuff
 +Tiles
