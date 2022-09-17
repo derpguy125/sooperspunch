@@ -1,14 +1,18 @@
++Controllers
+	+Initializers
+		|objSaveRoom
+	+Hurtboxes
+		|objAttackThing
+		|objLungeThing
+		|objDashThing
+		|objGPoundThing
+	|objPlayer
+	|objBG
+	|objTitle
 +Parents
 	|parSolid
 	|parSemiSolid
 	|parHurtbox
-+Controllers
-	|objPlayer
-	|objBG
-	+Hurtboxes
-		|objAttackThing
-		|objLungeThing
-		|objGPoundThing
 +Tiles
 	|objSolid
 	|objSlopeL

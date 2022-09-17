@@ -17,6 +17,7 @@ rolling = false;
 
 attack = false;
 lunge = false;
+running = false;
 
 grv = 0.2;
 jmp = -6.5;
@@ -29,7 +30,7 @@ top = 4;
 
 canVarJump = false;
 
-targRoom = rmInit;
+targRoom = rmHUB;
 /*"/*'/**//* YYD ACTION
 lib_id=1
 action_id=603
@@ -48,6 +49,7 @@ allow_y_movement = true;
         key_down                =   0;
         key_action              =   0;
         key_action2             =   0;
+        key_run                 =   0;
 
         key_left_pressed        =   0;
         key_right_pressed       =   0;
@@ -55,6 +57,7 @@ allow_y_movement = true;
         key_down_pressed        =   0;
         key_action_pressed      =   0;
         key_action2_pressed     =   0;
+        key_run_pressed         =   0;
 
         key_left_released       =   0;
         key_right_released      =   0;
@@ -62,6 +65,7 @@ allow_y_movement = true;
         key_down_released       =   0;
         key_action_released     =   0;
         key_action2_released    =   0;
+        key_run_released        =   0;
 
         assigned_key_left       = vk_left;
         assigned_key_right      = vk_right;
@@ -69,6 +73,7 @@ allow_y_movement = true;
         assigned_key_down       = vk_down;
         assigned_key_action     = ord("Z");
         assigned_key_action2    = ord("X");
+        assigned_key_run        = vk_shift;
 /*"/*'/**//* YYD ACTION
 lib_id=1
 action_id=603
@@ -136,7 +141,7 @@ if !rolling and !attack and !lunge and !pound and moveKeys != 0 then {
     }
 }
 
-
+// dashing
 
 if ground then {
     // jumping
@@ -167,7 +172,7 @@ if ground then {
     }
 
     // lunging
-    if !lunge and !ducking and !rolling and !lunge and hsp != 0 and key_action2_pressed then {
+    if !lunge and !ducking and !rolling and hsp != 0 and key_action2_pressed then {
         lunge = true;
         vsp = jmp / 1.7;
         hsp = dir * top;
@@ -179,6 +184,21 @@ if ground then {
         atk.image_xscale = dir;
         atk.image_speed = 0.5;
         atk.image_alpha = 0;
+    }
+
+    //dashing
+    if !ducking and !rolling and !attack and !lunge and key_run and hsp != 0 then {
+        running = true;
+        if !instance_exists(objDashThing) then {
+            var atk;
+            atk = instance_create(x+(dir * 8),y+4,objDashThing);
+            atk.image_xscale = dir;
+            atk.image_speed = 0;
+            atk.image_alpha = 0;
+        }
+    } else {
+        running = false;
+        if instance_exists(objDashThing) then with objDashThing instance_destroy();
     }
 
     // ducking
@@ -195,7 +215,11 @@ if ground then {
         mask_index = sprSpongeMask;
         acc = 0;
         top = 4;
-    } else if !rolling and !lunge and !place_meeting(x,y-1,parSolid) then {
+    } else if running then {
+        mask_index = sprSpongeMask;
+        acc = 0.25;
+        top = 12;
+    } else if !rolling and !lunge and !running and !place_meeting(x,y-1,parSolid) then {
         ducking = false;
         mask_index = sprSpongeMask;
         acc = 0.25;
@@ -258,6 +282,8 @@ applies_to=self
          key_action  =   keyboard_check( assigned_key_action );
          key_action2 =   keyboard_check( assigned_key_action2 );
 
+         key_run     =   keyboard_check( assigned_key_run );
+
          /* Press */
          key_left_pressed    =   keyboard_check_pressed( assigned_key_left );
          key_right_pressed   =   keyboard_check_pressed( assigned_key_right );
@@ -268,6 +294,8 @@ applies_to=self
          key_action_pressed  =   keyboard_check_pressed( assigned_key_action );
          key_action2_pressed =   keyboard_check_pressed( assigned_key_action2 );
 
+         key_run_pressed     =   keyboard_check_pressed( assigned_key_run );
+
          /* Release */
          key_left_released   =   keyboard_check_released( assigned_key_left );
          key_right_released  =   keyboard_check_released( assigned_key_right );
@@ -277,6 +305,8 @@ applies_to=self
 
          key_action_released =   keyboard_check_released( assigned_key_action );
          key_action2_released=   keyboard_check_released( assigned_key_action2 );
+
+         key_run_released    =   keyboard_check_released( assigned_key_run );
 #define Step_2
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -359,7 +389,7 @@ applies_to=self
 */
 
 
-if rolling or lunge or pound then {
+if rolling or lunge or pound or running then {
     draw_sprite_ext(sprite_index,image_index,round(x - (hsp*3)),round(y - (vsp*3)) + 4,
         dir,1,0,c_white,0.25);
 
@@ -372,3 +402,7 @@ if rolling or lunge or pound then {
 
 draw_sprite_ext(sprite_index,image_index,round(x),round(y) + 4,
     dir,1,0,c_white,1);
+
+
+
+draw_text(view_xview[0],view_yview[0],"DEBUG INFO#RUN, DUCK, ROLL, ATK, LUNGE#" + string(running) + " " + string(ducking) + " "  + string(rolling) + " "  + string(attack) + " "  + string(lunge))

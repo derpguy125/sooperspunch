@@ -15,7 +15,8 @@ sprSpongeRoll
 sprSpongeAttack
 sprSAttackHurtbox
 sprSpongeLunge
-sprSLungeHurtbox
+sprDashHitbox
 sprDoor
 sprSpongePound
 sprGPoundHurtbox
+sprSpunchLogo

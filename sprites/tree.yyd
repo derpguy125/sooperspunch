@@ -22,7 +22,9 @@
 		|sprDestroyable
 +Hurtboxes
 	|sprSAttackHurtbox
-	|sprSLungeHurtbox
+	|sprDashHitbox
 	|sprGPoundHurtbox
 +Object
 	|sprDoor
++Title
+	|sprSpunchLogo

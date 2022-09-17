@@ -1,3 +1,7 @@
-|rmInit
-|rmTest
-|rmTest2
+|rmTitle
+|rmHUB
+|rmTemplate
++Test
+	|rmTest
+	|rmTest2
+	|rmTest3
