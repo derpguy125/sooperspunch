@@ -1,6 +1,8 @@
 +Controllers
 	|objPlayer
 	|objBG
+	+Hurtboxes
+		|objAttackThing
 +Tiles
 	+Parents
 		|parSolid

@@ -15,6 +15,8 @@ pound = false;
 ducking = false;
 rolling = false;
 
+attack = false;
+
 grv = 0.2;
 jmp = -6.5;
 mvl = 16;
@@ -75,6 +77,13 @@ global.spatulas = 0;
 
 lookShiftX = 0;
 lookShiftY = 0;
+#define Alarm_0
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+attack = false;
 #define Step_0
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -99,7 +108,7 @@ applies_to=self
 var moveKeys;
 moveKeys = key_right - key_left;
 
-if !rolling and moveKeys != 0 then {
+if !rolling and !attack and moveKeys != 0 then {
     dir = moveKeys;
     if moveKeys = 1 then {
         if hsp <  top then hsp += acc; else hsp =  top;
@@ -141,6 +150,18 @@ if ground then {
         }
     }
 
+    // attacking
+    if !attack and !ducking and !rolling and hsp = 0 and key_action2_pressed then {
+        attack = true;
+        alarm[0] = 32;
+        hsp = 0;
+
+        var atk;
+        atk = instance_create(x+(dir * 8),y+4,objAttackThing);
+        atk.image_xscale = dir;
+        atk.image_speed = 0.5;
+        atk.image_alpha = 0;
+    }
     // ducking
     if !rolling and key_down then {
         ducking = true;
@@ -233,7 +254,7 @@ var curSprite;
 curSprite = sprite_index;
 
 if ground then {
-    if !ducking and !rolling then {
+    if !ducking and !rolling and !attack then {
         var moveKeys;
         moveKeys = key_right - key_left;
 
@@ -250,6 +271,9 @@ if ground then {
     } else if rolling then {
         sprite_index = sprSpongeRoll;
         image_speed = 0.3;
+    } else if attack then {
+        sprite_index = sprSpongeAttack;
+        image_speed = 0.5;
     }
 } else {
     if !rolling then {

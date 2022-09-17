@@ -9,3 +9,4 @@ objSemiSolid
 objBG
 objDestroyable
 objParticleParent
+objAttackThing

@@ -12,3 +12,5 @@ sprSpongeDuck
 sprDestroyable
 sprDestroyed
 sprSpongeRoll
+sprSpongeAttack
+sprSAttackHurtbox
