@@ -82,6 +82,7 @@ applies_to=self
 /// other shit
 
 global.spatulas = 0;
+global.hasKey = false;
 
 lookShiftX = 0;
 lookShiftY = 0;
@@ -405,4 +406,4 @@ draw_sprite_ext(sprite_index,image_index,round(x),round(y) + 4,
 
 
 
-draw_text(view_xview[0],view_yview[0],"DEBUG INFO#RUN, DUCK, ROLL, ATK, LUNGE#" + string(running) + " " + string(ducking) + " "  + string(rolling) + " "  + string(attack) + " "  + string(lunge))
+draw_text(view_xview[0],view_yview[0],"GOT KEY: " + string(global.hasKey));

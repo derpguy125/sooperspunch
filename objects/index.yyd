@@ -18,3 +18,7 @@ objDoor
 objSaveRoom
 objTitle
 objDashThing
+objKey
+objHall
+objLevelName
+objKeyDoor

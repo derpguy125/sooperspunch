@@ -12,6 +12,7 @@
 +Particles
 	|sprSmokePuff
 	|sprDestroyed
+	|sprSparkle
 +Tiles
 	+Solid Crap
 		|sprSolid
@@ -26,5 +27,10 @@
 	|sprGPoundHurtbox
 +Object
 	|sprDoor
+	|sprKeyDoor
+	|sprKey
+	|sprHall
 +Title
 	|sprSpunchLogo
++LevelNames
+	|sprLevelName1

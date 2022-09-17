@@ -23,3 +23,7 @@
 	|objParticleParent
 +Objects
 	|objDoor
+	|objKeyDoor
+	|objHall
+	|objKey
+	|objLevelName
