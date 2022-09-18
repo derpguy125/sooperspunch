@@ -7,8 +7,10 @@
 		|objDashThing
 		|objGPoundThing
 	|objPlayer
-	|objBG
 	|objTitle
+	+BGs
+		|objTitleBG
+		|objL1BG
 +Parents
 	|parSolid
 	|parSemiSolid

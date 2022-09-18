@@ -12,6 +12,6 @@ action_id=603
 applies_to=self
 */
 if instance_exists(objPlayer) {
-    x = objPlayer.x + (8 * image_xscale);
+    x = objPlayer.x;
     y = objPlayer.y;
 }

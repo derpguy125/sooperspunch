@@ -160,7 +160,7 @@ if ground then {
     }
 
     // attacking
-    if !attack and !ducking and !rolling and !lunge and hsp = 0 and key_action2_pressed then {
+    if !attack and !ducking and !rolling and !lunge and !pound and hsp = 0 and key_action2_pressed then {
         attack = true;
         alarm[0] = 32;
         hsp = 0;
@@ -173,7 +173,7 @@ if ground then {
     }
 
     // lunging
-    if !lunge and !ducking and !rolling and hsp != 0 and key_action2_pressed then {
+    if !lunge and !ducking and !rolling and !pound and hsp != 0 and key_action2_pressed then {
         lunge = true;
         vsp = jmp / 1.7;
         hsp = dir * top;
@@ -181,22 +181,16 @@ if ground then {
         acc = 0;
 
         var atk;
-        atk = instance_create(x+(dir * 8),y+4,objLungeThing);
+        atk = instance_create(x,y,objLungeThing);
         atk.image_xscale = dir;
         atk.image_speed = 0.5;
         atk.image_alpha = 0;
     }
 
     //dashing
-    if !ducking and !rolling and !attack and !lunge and key_run and hsp != 0 then {
+    if !ducking and !rolling and !attack and !lunge and !pound and key_run then {
         running = true;
-        if !instance_exists(objDashThing) then {
-            var atk;
-            atk = instance_create(x+(dir * 8),y+4,objDashThing);
-            atk.image_xscale = dir;
-            atk.image_speed = 0;
-            atk.image_alpha = 0;
-        }
+
     } else {
         running = false;
         if instance_exists(objDashThing) then with objDashThing instance_destroy();
@@ -220,6 +214,14 @@ if ground then {
         mask_index = sprSpongeMask;
         acc = 0.25;
         top = 12;
+
+        if hsp >= 8 and !instance_exists(objDashThing) then {
+            var atk;
+            atk = instance_create(x+(dir * 8),y+4,objDashThing);
+            atk.image_xscale = dir;
+            atk.image_speed = 0;
+            atk.image_alpha = 0;
+        }
     } else if !rolling and !lunge and !running and !place_meeting(x,y-1,parSolid) then {
         ducking = false;
         mask_index = sprSpongeMask;
@@ -245,6 +247,7 @@ else {
         atk = instance_create(x,y+16,objGPoundThing);
         atk.image_speed = 0;
         atk.image_alpha = 0;
+        atk.image_xscale = dir;
     }
 
     if vsp < mvl then vsp += grv;
@@ -406,4 +409,4 @@ draw_sprite_ext(sprite_index,image_index,round(x),round(y) + 4,
 
 
 
-draw_text(view_xview[0],view_yview[0],"GOT KEY: " + string(global.hasKey));
+draw_text(view_xview[0],view_yview[0],"GOT KEY: " + string(global.hasKey) + "#DASHING: " + string(running));

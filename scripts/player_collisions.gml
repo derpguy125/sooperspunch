@@ -19,6 +19,13 @@ if (place_meeting(x+hsp,y,parSolid)){
     if(place_meeting(x+hsp,y-yplus,parSolid)){
         while(!place_meeting(x+sign(hsp),y,parSolid)) x += sign(hsp);
         hsp=0;
+
+        if running then {
+            running = false;
+            mask_index = sprSpongeMask;
+            acc = 0.25;
+            top = 4;
+        }
     }else{
         y-=yplus;
     }
