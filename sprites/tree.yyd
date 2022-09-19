@@ -19,6 +19,8 @@
 		|sprSlopeL
 		|sprSlopeR
 		|sprSemiSolid
+		|sprPanicBlockOn
+		|sprPanicBlockOff
 	+Destructable
 		|sprDestroyable
 +Hurtboxes
