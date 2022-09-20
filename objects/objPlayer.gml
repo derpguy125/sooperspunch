@@ -85,7 +85,7 @@ global.spatulas = 0;
 global.hasKey = false;
 
 lookShiftX = 0;
-lookShiftY = 0;
+lookShiftY = -48;
 #define Alarm_0
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -215,12 +215,16 @@ if ground then {
         acc = 0.25;
         top = 12;
 
-        if hsp >= 8 and !instance_exists(objDashThing) then {
-            var atk;
-            atk = instance_create(x+(dir * 8),y+4,objDashThing);
-            atk.image_xscale = dir;
-            atk.image_speed = 0;
-            atk.image_alpha = 0;
+        if abs(hsp) >= 8 and (dir == sign(hsp)) then {
+            if !instance_exists(objDashThing) {
+                var atk;
+                atk = instance_create(x+(dir * 8),y+4,objDashThing);
+                atk.image_xscale = dir;
+                atk.image_speed = 0;
+                atk.image_alpha = 0;
+            }
+        } else {
+            if instance_exists(objDashThing) then with objDashThing instance_destroy();
         }
     } else if !rolling and !lunge and !running and !place_meeting(x,y-1,parSolid) then {
         ducking = false;
@@ -247,7 +251,7 @@ else {
         atk = instance_create(x,y+16,objGPoundThing);
         atk.image_speed = 0;
         atk.image_alpha = 0;
-        atk.image_xscale = dir;
+
     }
 
     if vsp < mvl then vsp += grv;

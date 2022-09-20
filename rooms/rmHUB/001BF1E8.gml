@@ -1,5 +1,5 @@
 event_inherited();
 
-targetRoom = rmTest;
-targetX = 96;
-targetY = 448;
+targetRoom = rmWave1;
+targetX = 160;
+targetY = 416;
