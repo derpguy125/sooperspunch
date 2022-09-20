@@ -86,6 +86,16 @@ global.hasKey = false;
 
 lookShiftX = 0;
 lookShiftY = -48;
+
+prevX[0] = x;
+prevX[1] = x;
+prevX[2] = x;
+prevX[3] = x;
+
+prevY[0] = y;
+prevY[1] = y;
+prevY[2] = y;
+prevY[3] = y;
 #define Alarm_0
 /*"/*'/**//* YYD ACTION
 lib_id=1
@@ -279,6 +289,17 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+/// prevX and prevY
+
+prevX[3] = prevX[2]; prevY[3] = prevY[2];
+prevX[2] = prevX[1]; prevY[2] = prevY[1];
+prevX[1] = prevX[0]; prevY[1] = prevY[0];
+prevX[0] = x; prevY[0] = y;
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
 /// input shit
 /* Hold */
          key_left    =   keyboard_check( assigned_key_left );
@@ -397,18 +418,21 @@ applies_to=self
 */
 
 
-if rolling or lunge or pound or running then {
-    draw_sprite_ext(sprite_index,image_index,round(x - (hsp*3)),round(y - (vsp*3)) + 4,
-        dir,1,0,c_white,0.25);
+if rolling or lunge or pound or (running and abs(hsp) >= 8 and (dir == sign(hsp))) then {
+    draw_sprite_ext(sprite_index,image_index,round(prevX[3]),round(prevY[3]),
+        dir,1,0,c_white,0.1);
 
-    draw_sprite_ext(sprite_index,image_index,round(x - (hsp*2)),round(y - (vsp*2)) + 4,
+    draw_sprite_ext(sprite_index,image_index,round(prevX[2]),round(prevY[2]),
+        dir,1,0,c_white,0.2);
+
+    draw_sprite_ext(sprite_index,image_index,round(prevX[1]),round(prevY[1]),
         dir,1,0,c_white,0.5);
 
-    draw_sprite_ext(sprite_index,image_index,round(x - (hsp)),round(y - (vsp)) + 4,
+    draw_sprite_ext(sprite_index,image_index,round(prevX[0]),round(prevY[0]),
         dir,1,0,c_white,0.75);
 }
 
-draw_sprite_ext(sprite_index,image_index,round(x),round(y) + 4,
+draw_sprite_ext(sprite_index,image_index,round(x),round(y),
     dir,1,0,c_white,1);
 
 
