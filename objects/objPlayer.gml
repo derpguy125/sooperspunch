@@ -79,6 +79,23 @@ lib_id=1
 action_id=603
 applies_to=self
 */
+/// anim shit
+
+idleSprite  = sprPIdle;
+moveSprite  = sprPMove;
+dashSprite  = sprPMove;
+
+jumpSprite  = sprPIdle;
+poundSprite = sprPIdle;
+
+lungeSprite = sprPIdle;
+duckSprite  = sprPIdle;
+rollSprite  = sprPIdle;
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
 /// other shit
 
 global.spatulas = 0;
@@ -144,7 +161,7 @@ if !rolling and !attack and !lunge and !pound and moveKeys != 0 then {
             rolling = false;
             if place_meeting(x,y-1,parSolid) then {
                 ducking = true;
-                mask_index = sprSpongeMaskSmall;
+                mask_index = sprPMaskSmall;
                 acc = 0.1;
                 top = 2;
             }
@@ -156,20 +173,13 @@ if !rolling and !attack and !lunge and !pound and moveKeys != 0 then {
 
 if ground then {
     // jumping
-    if !ducking and key_action_pressed then {
+    if key_action_pressed then {
         vsp = jmp;
         ground = false;
         canVarJump = true;
-    } else {
-        if ducking and key_action2_pressed then {
-            rolling = true;
-            ducking = false;
-            hsp = 16 * dir;
-
-        }
     }
 
-    // attacking
+    /* attacking
     if !attack and !ducking and !rolling and !lunge and !pound and hsp = 0 and key_action2_pressed then {
         attack = true;
         alarm[0] = 32;
@@ -180,7 +190,7 @@ if ground then {
         atk.image_xscale = dir;
         atk.image_speed = 0.5;
         atk.image_alpha = 0;
-    }
+    }*/
 
     // lunging
     if !lunge and !ducking and !rolling and !pound and hsp != 0 and key_action2_pressed then {
@@ -198,7 +208,7 @@ if ground then {
     }
 
     //dashing
-    if !ducking and !rolling and !attack and !lunge and !pound and key_run then {
+    if !ducking and !rolling and !attack and !pound and key_run then {
         running = true;
 
     } else {
@@ -208,20 +218,24 @@ if ground then {
 
     // ducking
     if !rolling and key_down then {
-        ducking = true;
-        mask_index = sprSpongeMaskSmall;
-        acc = 0.1;
-        top = 2;
+        if (running and abs(hsp) >= 8 and (dir == sign(hsp))) then {
+            rolling = true;
+        } else {
+            ducking = true;
+            mask_index = sprPMaskSmall;
+            acc = 0.1;
+            top = 2;
+        }
     } else if rolling then {
-        mask_index = sprSpongeMaskSmall;
+        mask_index = sprPMaskSmall;
         top = 16;
-        acc = 0.3;
+        acc = 0.1;
     } else if lunge then {
-        mask_index = sprSpongeMask;
+        mask_index = sprPMask;
         acc = 0;
         top = 4;
     } else if running then {
-        mask_index = sprSpongeMask;
+        mask_index = sprPMask;
         acc = 0.25;
         top = 12;
 
@@ -238,7 +252,7 @@ if ground then {
         }
     } else if !rolling and !lunge and !running and !place_meeting(x,y-1,parSolid) then {
         ducking = false;
-        mask_index = sprSpongeMask;
+        mask_index = sprPMask;
         acc = 0.25;
         top = 4;
     }
@@ -291,10 +305,17 @@ applies_to=self
 */
 /// prevX and prevY
 
-prevX[3] = prevX[2]; prevY[3] = prevY[2];
-prevX[2] = prevX[1]; prevY[2] = prevY[1];
-prevX[1] = prevX[0]; prevY[1] = prevY[0];
-prevX[0] = x; prevY[0] = y;
+if rolling or lunge or pound or (running and abs(hsp) >= 8 and (dir == sign(hsp))) then {
+    prevX[3] = prevX[2]; prevY[3] = prevY[2];
+    prevX[2] = prevX[1]; prevY[2] = prevY[1];
+    prevX[1] = prevX[0]; prevY[1] = prevY[0];
+    prevX[0] = x; prevY[0] = y;
+} else {
+    prevX[3] = x; prevY[3] = y;
+    prevX[2] = x; prevY[2] = y;
+    prevX[1] = x; prevY[1] = y;
+    prevX[0] = x; prevY[0] = y;
+}
 /*"/*'/**//* YYD ACTION
 lib_id=1
 action_id=603
@@ -353,35 +374,40 @@ if ground then {
         moveKeys = key_right - key_left;
 
         if moveKeys != 0 then {
-            sprite_index = sprSpongeMove;
-            image_speed = 0.5;
+            if running then {
+                sprite_index = dashSprite;
+                image_speed = 0.5;
+            } else {
+                sprite_index = moveSprite;
+                image_speed = 0.25;
+            }
         } else {
-            sprite_index = sprSpongeIdle;
+            sprite_index = idleSprite;
             image_speed = 0.1;
         }
     } else if ducking then {
-        sprite_index = sprSpongeDuck;
+        sprite_index = duckSprite;
         image_speed = 0;
     } else if rolling then {
-        sprite_index = sprSpongeRoll;
+        sprite_index = rollSprite;
         image_speed = 0.3;
     } else if attack then {
-        sprite_index = sprSpongeAttack;
+        sprite_index = idleSprite;
         image_speed = 0.5;
     }
 } else {
     if !rolling and !lunge and !pound then {
-        sprite_index = sprSpongeJump;
+        sprite_index = jumpSprite;
         if vsp < 0 then {
             image_index = 0;
         } else {
             image_index = 1;
         }
     } else if rolling then {
-        sprite_index = sprSpongeRoll;
+        sprite_index = rollSprite;
         image_speed = 0.3;
     } else if lunge then {
-        sprite_index = sprSpongeLunge;
+        sprite_index = lungeSprite;
         image_speed = 0.25;
 
         if image_index >= 7 then {
@@ -389,7 +415,7 @@ if ground then {
             image_index = 7;
         }
     } else if pound then {
-        sprite_index = sprSpongePound;
+        sprite_index = poundSprite;
         image_speed = 0;
     }
 }

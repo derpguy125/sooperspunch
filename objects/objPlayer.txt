@@ -1,7 +1,7 @@
-sprite=sprSpongeIdle
+sprite=sprPIdle
 visible=1
 solid=0
 persistent=1
 depth=-99
 parent=
-mask=sprSpongeMask
+mask=sprPMask

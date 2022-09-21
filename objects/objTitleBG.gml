@@ -8,14 +8,14 @@ wave = 0;
 
 wave2 = -320;
 
-scale = 7;
+scale = 8;
 #define Step_0
 /*"/*'/**//* YYD ACTION
 lib_id=1
 action_id=603
 applies_to=self
 */
-wave += 0.02;
+wave += degtorad(5);
 #define Draw_0
 /*"/*'/**//* YYD ACTION
 lib_id=1

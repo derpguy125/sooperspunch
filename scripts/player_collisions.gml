@@ -22,7 +22,7 @@ if (place_meeting(x+hsp,y,parSolid)){
 
         if running then {
             running = false;
-            mask_index = sprSpongeMask;
+            mask_index = sprPMask;
             acc = 0.25;
             top = 4;
         }

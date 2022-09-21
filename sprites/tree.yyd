@@ -1,14 +1,8 @@
-+Sponge
-	|sprSpongeMask
-	|sprSpongeMaskSmall
-	|sprSpongeIdle
-	|sprSpongeMove
-	|sprSpongeJump
-	|sprSpongeDuck
-	|sprSpongeRoll
-	|sprSpongeAttack
-	|sprSpongeLunge
-	|sprSpongePound
++Player
+	|sprPMask
+	|sprPMaskSmall
+	|sprPIdle
+	|sprPMove
 +Particles
 	|sprSmokePuff
 	|sprDestroyed
