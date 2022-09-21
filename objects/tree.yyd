@@ -3,8 +3,8 @@
 		|objSaveRoom
 	+Hurtboxes
 		|objAttackThing
-		|objLungeThing
 		|objDashThing
+		|objRollThing
 		|objGPoundThing
 	|objPlayer
 	|objTitle
@@ -21,6 +21,7 @@
 	|objSlopeR
 	|objSemiSolid
 	|objDestroyable
+	|objSecretDestroyable
 +Particle
 	|objParticleParent
 +Objects

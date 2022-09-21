@@ -3,6 +3,13 @@
 	|sprPMaskSmall
 	|sprPIdle
 	|sprPMove
+	|sprPJump
+	|sprPPound
+	|sprPCrouchJump
+	|sprPDash
+	|sprPCrouch
+	|sprPCrawl
+	|sprPRoll
 +Particles
 	|sprSmokePuff
 	|sprDestroyed
@@ -17,9 +24,10 @@
 		|sprPanicBlockOff
 	+Destructable
 		|sprDestroyable
+		|sprSecretDest
 +Hurtboxes
-	|sprSAttackHurtbox
 	|sprDashHitbox
+	|sprRollHitbox
 	|sprGPoundHurtbox
 +Object
 	|sprDoor

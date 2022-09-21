@@ -11,7 +11,7 @@ objDestroyable
 objParticleParent
 objAttackThing
 
-objLungeThing
+
 parHurtbox
 objGPoundThing
 objDoor
@@ -23,3 +23,5 @@ objHall
 objLevelName
 objKeyDoor
 objL1BG
+objRollThing
+objSecretDestroyable

@@ -9,8 +9,8 @@ if ds_list_find_index(global.saveroom, id) == -1 {
         var part;
         part = instance_create(x,y+16,objParticleParent);
 
-        part.hsp = irandom_range(-3,3);
-        part.vsp = irandom_range(-4,0);
+        part.hsp = random_range(-3,3);
+        part.vsp = random_range(-4,0);
         part.grv = 0.25;
         part.rot = irandom_range(-15,15);
 

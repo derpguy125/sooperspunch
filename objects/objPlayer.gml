@@ -83,14 +83,16 @@ applies_to=self
 
 idleSprite  = sprPIdle;
 moveSprite  = sprPMove;
-dashSprite  = sprPMove;
+dashSprite  = sprPDash;
 
-jumpSprite  = sprPIdle;
-poundSprite = sprPIdle;
+jumpSprite  = sprPJump;
+dJumpSprite = sprPCrouchJump;
+poundSprite = sprPPound;
 
 lungeSprite = sprPIdle;
-duckSprite  = sprPIdle;
-rollSprite  = sprPIdle;
+duckSprite  = sprPCrouch;
+crawlSprite = sprPCrawl;
+rollSprite  = sprPRoll;
 /*"/*'/**//* YYD ACTION
 lib_id=1
 action_id=603
@@ -159,6 +161,7 @@ if !rolling and !attack and !lunge and !pound and moveKeys != 0 then {
         hsp = 0;
         if ground and rolling then {
             rolling = false;
+            if instance_exists(objRollThing) then with objRollThing instance_destroy();
             if place_meeting(x,y-1,parSolid) then {
                 ducking = true;
                 mask_index = sprPMaskSmall;
@@ -192,7 +195,7 @@ if ground then {
         atk.image_alpha = 0;
     }*/
 
-    // lunging
+    /* lunging
     if !lunge and !ducking and !rolling and !pound and hsp != 0 and key_action2_pressed then {
         lunge = true;
         vsp = jmp / 1.7;
@@ -205,7 +208,7 @@ if ground then {
         atk.image_xscale = dir;
         atk.image_speed = 0.5;
         atk.image_alpha = 0;
-    }
+    }*/
 
     //dashing
     if !ducking and !rolling and !attack and !pound and key_run then {
@@ -220,6 +223,15 @@ if ground then {
     if !rolling and key_down then {
         if (running and abs(hsp) >= 8 and (dir == sign(hsp))) then {
             rolling = true;
+            if !instance_exists(objRollThing) then {
+
+                var atk;
+                atk = instance_create(x+(dir * 8),y+4,objRollThing);
+                atk.image_xscale = dir;
+                atk.image_speed = 0;
+                atk.image_alpha = 0;
+
+            }
         } else {
             ducking = true;
             mask_index = sprPMaskSmall;
@@ -279,23 +291,6 @@ else {
     }
 
     if vsp < mvl then vsp += grv;
-}
-/*"/*'/**//* YYD ACTION
-lib_id=1
-action_id=603
-applies_to=self
-*/
-/// block destroying
-
-if rolling or lunge then {
-    var block;
-    block = instance_place(x+hsp,y,objDestroyable);
-
-    if block != noone then {
-        with block {
-            instance_destroy();
-        }
-    }
 }
 #define Step_1
 /*"/*'/**//* YYD ACTION
@@ -369,39 +364,43 @@ var curSprite;
 curSprite = sprite_index;
 
 if ground then {
-    if !ducking and !rolling and !attack then {
+    if !rolling and !attack then {
         var moveKeys;
         moveKeys = key_right - key_left;
 
         if moveKeys != 0 then {
-            if running then {
+            if (running and abs(hsp) >= 8 and (dir == sign(hsp))) then {
                 sprite_index = dashSprite;
                 image_speed = 0.5;
+            } else if ducking then {
+                sprite_index = crawlSprite;
+                image_speed = 0.1;
             } else {
                 sprite_index = moveSprite;
                 image_speed = 0.25;
             }
         } else {
-            sprite_index = idleSprite;
-            image_speed = 0.1;
+            if ducking then {
+                sprite_index = duckSprite;
+                image_speed = 0;
+            } else {
+                sprite_index = idleSprite;
+                image_speed = 0.1;
+            }
         }
-    } else if ducking then {
-        sprite_index = duckSprite;
-        image_speed = 0;
-    } else if rolling then {
+    }else if rolling then {
         sprite_index = rollSprite;
-        image_speed = 0.3;
+        image_speed = 0.5;
     } else if attack then {
         sprite_index = idleSprite;
         image_speed = 0.5;
     }
 } else {
     if !rolling and !lunge and !pound then {
-        sprite_index = jumpSprite;
-        if vsp < 0 then {
-            image_index = 0;
+        if ducking then {
+            sprite_index = dJumpSprite;
         } else {
-            image_index = 1;
+            sprite_index = jumpSprite;
         }
     } else if rolling then {
         sprite_index = rollSprite;
@@ -463,4 +462,4 @@ draw_sprite_ext(sprite_index,image_index,round(x),round(y),
 
 
 
-draw_text(view_xview[0],view_yview[0],"GOT KEY: " + string(global.hasKey) + "#DASHING: " + string(running));
+if global.hasKey then draw_sprite(sprKey,0,view_xview[0]+16,view_yview[0]+16)

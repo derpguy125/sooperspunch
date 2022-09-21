@@ -13,7 +13,7 @@ sprDestroyable
 sprDestroyed
 
 
-sprSAttackHurtbox
+
 
 sprDashHitbox
 sprDoor
@@ -30,3 +30,13 @@ sprPanicBlockOn
 sprPanicBlockOff
 sprPIdle
 sprPMove
+sprPJump
+sprPPound
+sprPDash
+sprPCrouch
+sprPCrawl
+sprPRoll
+
+sprPCrouchJump
+sprRollHitbox
+sprSecretDest

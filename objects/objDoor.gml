@@ -21,10 +21,9 @@ action_id=603
 applies_to=self
 */
 with objPlayer {
-    if key_up_pressed and hsp = 0 and ground and !attack and !lunge and !rolling and !pound then {
+    if key_up_pressed and abs(hsp) <= 2 and ground and !attack and !lunge and !rolling and !pound then {
         x = other.targetX;
         y = other.targetY;
-        targRoom = other.targetRoom;
-        room_goto(targRoom);
+        room_goto(other.targetRoom);
     }
 }
