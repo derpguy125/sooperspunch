@@ -29,6 +29,7 @@ acc = 0.25;
 top = 4;
 
 canVarJump = false;
+canMove = true;
 
 targRoom = rmHUB;
 /*"/*'/**//* YYD ACTION
@@ -142,170 +143,172 @@ applies_to=self
 */
 /// time for movement
 
-// horizontal movement
-var moveKeys;
-moveKeys = key_right - key_left;
+if canMove then {
+    // horizontal movement
+    var moveKeys;
+    moveKeys = key_right - key_left;
 
-if !rolling and !attack and !lunge and !pound and moveKeys != 0 then {
-    dir = moveKeys;
-    if moveKeys = 1 then {
-        if hsp <  top then hsp += acc; else hsp =  top;
-    }
-    if moveKeys = -1 then {
-        if hsp > -top then hsp -= acc; else hsp = -top;
-    }
-} else {
-    var slop;
-    slop = instance_place(x,y+1,parSlope);
-
-    if rolling and slop != noone then {
-
-        hsp += ((acc*2) * slop.dir);
-
-        if sign(hsp) == slop.dir then dir = slop.dir;
-
+    if !rolling and !attack and !lunge and !pound and moveKeys != 0 then {
+        dir = moveKeys;
+        if moveKeys = 1 then {
+            if hsp <  top then hsp += acc; else hsp =  top;
+        }
+        if moveKeys = -1 then {
+            if hsp > -top then hsp -= acc; else hsp = -top;
+        }
     } else {
-        if hsp > acc then hsp -= acc;
-        else if hsp < -acc then hsp += acc;
-        else {
-            hsp = 0;
-            if ground and rolling then {
-                rolling = false;
-                if instance_exists(objRollThing) then with objRollThing instance_destroy();
-                if place_meeting(x,y-1,parSolid) then {
-                    ducking = true;
-                    mask_index = sprPMaskSmall;
-                    acc = 0.1;
-                    top = 2;
+        var slop;
+        slop = instance_place(x,y+1,parSlope);
+
+        if rolling and slop != noone then {
+
+            hsp += ((acc*2) * slop.dir);
+
+            if sign(hsp) == slop.dir then dir = slop.dir;
+
+        } else {
+            if hsp > acc then hsp -= acc;
+            else if hsp < -acc then hsp += acc;
+            else {
+                hsp = 0;
+                if ground and rolling then {
+                    rolling = false;
+                    if instance_exists(objRollThing) then with objRollThing instance_destroy();
+                    if place_meeting(x,y-1,parSolid) then {
+                        ducking = true;
+                        mask_index = sprPMaskSmall;
+                        acc = 0.1;
+                        top = 2;
+                    }
                 }
             }
         }
     }
-}
 
-// dashing
+    // dashing
 
-if ground then {
-    // jumping
-    if key_action_pressed then {
-        if ducking then {
-            jmp = -3.5;
-        } else jmp = -6.5;
+    if ground then {
+        // jumping
+        if key_action_pressed then {
+            if ducking then {
+                jmp = -3.5;
+            } else jmp = -6.5;
 
-        vsp = jmp;
-        ground = false;
-        canVarJump = true;
-    }
-
-    /* attacking
-    if !attack and !ducking and !rolling and !lunge and !pound and hsp = 0 and key_action2_pressed then {
-        attack = true;
-        alarm[0] = 32;
-        hsp = 0;
-
-        var atk;
-        atk = instance_create(x+(dir * 8),y+4,objAttackThing);
-        atk.image_xscale = dir;
-        atk.image_speed = 0.5;
-        atk.image_alpha = 0;
-    }*/
-
-    /* lunging
-    if !lunge and !ducking and !rolling and !pound and hsp != 0 and key_action2_pressed then {
-        lunge = true;
-        vsp = jmp / 1.7;
-        hsp = dir * top;
-        ground = false;
-        acc = 0;
-
-        var atk;
-        atk = instance_create(x,y,objLungeThing);
-        atk.image_xscale = dir;
-        atk.image_speed = 0.5;
-        atk.image_alpha = 0;
-    }*/
-
-    //dashing
-    if !ducking and !rolling and !attack and !pound and key_run then {
-        running = true;
-
-    } else {
-        running = false;
-        if instance_exists(objDashThing) then with objDashThing instance_destroy();
-    }
-
-    // ducking
-    if !rolling and key_down then {
-        if (running and abs(hsp) >= 8 and (dir == sign(hsp))) then {
-            rolling = true;
-            if !instance_exists(objRollThing) then {
-
-                var atk;
-                atk = instance_create(x+(dir * 8),y+4,objRollThing);
-                atk.image_xscale = dir;
-                atk.image_speed = 0;
-                atk.image_alpha = 0;
-
-            }
-        } else {
-            ducking = true;
-            mask_index = sprPMaskSmall;
-            acc = 0.1;
-            top = 2;
+            vsp = jmp;
+            ground = false;
+            canVarJump = true;
         }
-    } else if rolling then {
-        mask_index = sprPMaskSmall;
-        top = 16;
-        acc = 0.1;
-    } else if lunge then {
-        mask_index = sprPMask;
-        acc = 0;
-        top = 4;
-    } else if running then {
-        mask_index = sprPMask;
-        acc = 0.25;
-        top = 12;
 
-        if abs(hsp) >= 8 and (dir == sign(hsp)) then {
-            if !instance_exists(objDashThing) {
-                var atk;
-                atk = instance_create(x+(dir * 8),y+4,objDashThing);
-                atk.image_xscale = dir;
-                atk.image_speed = 0;
-                atk.image_alpha = 0;
-            }
+        /* attacking
+        if !attack and !ducking and !rolling and !lunge and !pound and hsp = 0 and key_action2_pressed then {
+            attack = true;
+            alarm[0] = 32;
+            hsp = 0;
+
+            var atk;
+            atk = instance_create(x+(dir * 8),y+4,objAttackThing);
+            atk.image_xscale = dir;
+            atk.image_speed = 0.5;
+            atk.image_alpha = 0;
+        }*/
+
+        /* lunging
+        if !lunge and !ducking and !rolling and !pound and hsp != 0 and key_action2_pressed then {
+            lunge = true;
+            vsp = jmp / 1.7;
+            hsp = dir * top;
+            ground = false;
+            acc = 0;
+
+            var atk;
+            atk = instance_create(x,y,objLungeThing);
+            atk.image_xscale = dir;
+            atk.image_speed = 0.5;
+            atk.image_alpha = 0;
+        }*/
+
+        //dashing
+        if !ducking and !rolling and !attack and !pound and key_run then {
+            running = true;
+
         } else {
+            running = false;
             if instance_exists(objDashThing) then with objDashThing instance_destroy();
         }
-    } else if !rolling and !lunge and !running and !place_meeting(x,y-1,parSolid) then {
-        ducking = false;
-        mask_index = sprPMask;
-        acc = 0.25;
-        top = 4;
+
+        // ducking
+        if !rolling and key_down then {
+            if (running and abs(hsp) >= 8 and (dir == sign(hsp))) then {
+                rolling = true;
+                if !instance_exists(objRollThing) then {
+
+                    var atk;
+                    atk = instance_create(x+(dir * 8),y+4,objRollThing);
+                    atk.image_xscale = dir;
+                    atk.image_speed = 0;
+                    atk.image_alpha = 0;
+
+                }
+            } else {
+                ducking = true;
+                mask_index = sprPMaskSmall;
+                acc = 0.1;
+                top = 2;
+            }
+        } else if rolling then {
+            mask_index = sprPMaskSmall;
+            top = 16;
+            acc = 0.1;
+        } else if lunge then {
+            mask_index = sprPMask;
+            acc = 0;
+            top = 4;
+        } else if running then {
+            mask_index = sprPMask;
+            acc = 0.25;
+            top = 12;
+
+            if abs(hsp) >= 8 and (dir == sign(hsp)) then {
+                if !instance_exists(objDashThing) {
+                    var atk;
+                    atk = instance_create(x+(dir * 8),y+4,objDashThing);
+                    atk.image_xscale = dir;
+                    atk.image_speed = 0;
+                    atk.image_alpha = 0;
+                }
+            } else {
+                if instance_exists(objDashThing) then with objDashThing instance_destroy();
+            }
+        } else if !rolling and !lunge and !running and !place_meeting(x,y-1,parSolid) then {
+            ducking = false;
+            mask_index = sprPMask;
+            acc = 0.25;
+            top = 4;
+        }
     }
-}
 
-//vertical movement
-else {
+    //vertical movement
+    else {
 
-    if canVarJump and vsp < -0.25 and key_action_released then {
-        vsp = -0.25;
-        canVarJump = false;
+        if canVarJump and vsp < -0.25 and key_action_released then {
+            vsp = -0.25;
+            canVarJump = false;
+        }
+
+        if !pound and key_down_pressed then {
+            pound = true;
+            vsp = mvl;
+            hsp = 0;
+
+            var atk;
+            atk = instance_create(x,y+16,objGPoundThing);
+            atk.image_speed = 0;
+            atk.image_alpha = 0;
+
+        }
+
+        if vsp < mvl then vsp += grv;
     }
-
-    if !pound and key_down_pressed then {
-        pound = true;
-        vsp = mvl;
-        hsp = 0;
-
-        var atk;
-        atk = instance_create(x,y+16,objGPoundThing);
-        atk.image_speed = 0;
-        atk.image_alpha = 0;
-
-    }
-
-    if vsp < mvl then vsp += grv;
 }
 #define Step_1
 /*"/*'/**//* YYD ACTION
@@ -450,6 +453,17 @@ if view_xview[0] >= room_width  - view_wview[0] then view_xview[0] = room_width 
 
 if view_yview[0] <= 0                           then view_yview[0] = 0;
 if view_yview[0] >= room_height - view_hview[0] then view_yview[0] = room_height - view_hview[0];
+#define Collision_objHall
+/*"/*'/**//* YYD ACTION
+lib_id=1
+action_id=603
+applies_to=self
+*/
+if ground then {
+    x = other.targetX;
+    y = other.targetY;
+    room_goto(other.targetRoom);
+}
 #define Draw_0
 /*"/*'/**//* YYD ACTION
 lib_id=1

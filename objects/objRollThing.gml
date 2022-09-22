@@ -17,5 +17,3 @@ if instance_exists(objPlayer) {
 
     image_xscale = objPlayer.dir;
 }
-
-image_alpha = 1;
