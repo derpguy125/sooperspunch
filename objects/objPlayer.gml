@@ -155,18 +155,29 @@ if !rolling and !attack and !lunge and !pound and moveKeys != 0 then {
         if hsp > -top then hsp -= acc; else hsp = -top;
     }
 } else {
-    if hsp > acc then hsp -= acc;
-    else if hsp < -acc then hsp += acc;
-    else {
-        hsp = 0;
-        if ground and rolling then {
-            rolling = false;
-            if instance_exists(objRollThing) then with objRollThing instance_destroy();
-            if place_meeting(x,y-1,parSolid) then {
-                ducking = true;
-                mask_index = sprPMaskSmall;
-                acc = 0.1;
-                top = 2;
+    var slop;
+    slop = instance_place(x,y+1,parSlope);
+
+    if rolling and slop != noone then {
+
+        hsp += ((acc*2) * slop.dir);
+
+        if sign(hsp) == slop.dir then dir = slop.dir;
+
+    } else {
+        if hsp > acc then hsp -= acc;
+        else if hsp < -acc then hsp += acc;
+        else {
+            hsp = 0;
+            if ground and rolling then {
+                rolling = false;
+                if instance_exists(objRollThing) then with objRollThing instance_destroy();
+                if place_meeting(x,y-1,parSolid) then {
+                    ducking = true;
+                    mask_index = sprPMaskSmall;
+                    acc = 0.1;
+                    top = 2;
+                }
             }
         }
     }
@@ -177,6 +188,10 @@ if !rolling and !attack and !lunge and !pound and moveKeys != 0 then {
 if ground then {
     // jumping
     if key_action_pressed then {
+        if ducking then {
+            jmp = -3.5;
+        } else jmp = -6.5;
+
         vsp = jmp;
         ground = false;
         canVarJump = true;

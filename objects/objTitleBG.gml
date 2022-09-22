@@ -15,7 +15,7 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-wave += degtorad(5);
+wave += degtorad(1);
 #define Draw_0
 /*"/*'/**//* YYD ACTION
 lib_id=1

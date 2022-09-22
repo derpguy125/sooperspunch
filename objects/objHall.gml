@@ -22,8 +22,9 @@ applies_to=self
 */
 with objPlayer {
     if ground then {
+        room_goto(other.targetRoom);
         x = other.targetX;
         y = other.targetY;
-        room_goto(other.targetRoom);
+
     }
 }

@@ -13,6 +13,7 @@
 		|objL1BG
 +Parents
 	|parSolid
+	|parSlope
 	|parSemiSolid
 	|parHurtbox
 +Tiles

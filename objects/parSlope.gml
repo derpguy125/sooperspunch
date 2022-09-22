@@ -4,4 +4,4 @@ lib_id=1
 action_id=603
 applies_to=self
 */
-dir = 1;
+dir = 0;

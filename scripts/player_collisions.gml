@@ -71,13 +71,29 @@ if position_meeting(round(x), round(y) + 32, parSemiSolid) && vsp > 0  {
 
 if place_meeting(x,y+1,parSolid) or ((!(place_meeting(x, y, parSemiSolid))) && place_meeting(x, (y + 1), parSemiSolid)) then {
     ground = true;
-    if lunge then {
-        lunge = false;
-        if instance_exists(objLungeThing) then with objLungeThing instance_destroy();
-    }
     if pound then {
         pound = false;
         if instance_exists(objGPoundThing) then with objGPoundThing instance_destroy();
+
+        var slop;
+        slop = instance_place(x,y+1,parSlope);
+
+        if slop != noone then {
+            rolling = true;
+            hsp = 12 * slop.dir;
+
+            dir = slop.dir;
+
+            if !instance_exists(objRollThing) then {
+
+                var atk;
+                atk = instance_create(x+(dir * 8),y+4,objRollThing);
+                atk.image_xscale = dir;
+                atk.image_speed = 0;
+                atk.image_alpha = 0;
+
+            }
+        }
     }
 }
 else ground = false;
